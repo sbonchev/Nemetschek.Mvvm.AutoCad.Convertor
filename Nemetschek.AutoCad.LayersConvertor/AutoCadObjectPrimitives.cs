@@ -3,6 +3,8 @@ using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.EditorInput;
+using AppDoc = Autodesk.AutoCAD.ApplicationServices.Application;
+
 
 namespace Nemetschek.AutoCad.LayersConvertor
 {
@@ -17,7 +19,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
         [CommandMethod("AddLine")]
         public static void DrawLine()
         {
-            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Document doc = AppDoc.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
             var line = new Line
             {
@@ -47,10 +49,13 @@ namespace Nemetschek.AutoCad.LayersConvertor
             }
         }
 
+        /// <summary>
+        /// Draw different circles
+        /// </summary>
         [CommandMethod("AddCircles")]
         public static void DrawCircles()
         {
-            Document doc = Application.DocumentManager.MdiActiveDocument; // --- Get the current document and database
+            Document doc = AppDoc.DocumentManager.MdiActiveDocument; // --- Get the current document and database
             Database db = doc.Database;
             try
             {
@@ -87,12 +92,9 @@ namespace Nemetschek.AutoCad.LayersConvertor
                             trans.AddNewlyCreatedDBObject(circle2, true);
 
                             // Create a circle objects' collection:
-                            var col = new DBObjectCollection
-                        {
-                            circle1,
-                            circle2,
-                            circle3
-                        };
+                            var col = new DBObjectCollection { circle1,
+                                                               circle2,
+                                                               circle3 };
                         }
                         trans.Commit();
                     }
@@ -111,10 +113,12 @@ namespace Nemetschek.AutoCad.LayersConvertor
         [CommandMethod("GetEntity")]
         public static void GetCustomEntity()
         {
-            Document doc = Application.DocumentManager.MdiActiveDocument;
+            Document doc = AppDoc.DocumentManager.MdiActiveDocument;
             Editor AcEd = doc.Editor;
-            PromptEntityOptions pEntOpts = new PromptEntityOptions("\nSelect entity: ");
-            pEntOpts.AllowNone = true;
+            PromptEntityOptions pEntOpts = new("\nSelect entity: ")
+            {
+                AllowNone = true
+            };
             PromptEntityResult pEntRes = AcEd.GetEntity(pEntOpts);
 
             if (pEntRes.Status == PromptStatus.OK)

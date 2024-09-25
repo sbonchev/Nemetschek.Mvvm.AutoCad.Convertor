@@ -1,11 +1,6 @@
-﻿using Autodesk.AutoCAD.ApplicationServices;
-using Autodesk.AutoCAD.DatabaseServices;
-using Autodesk.AutoCAD.EditorInput;
-using Autodesk.AutoCAD.Geometry;
-using Autodesk.AutoCAD.Runtime;
+﻿using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Ribbon;
 using System.Runtime.InteropServices;
-using AcAp = Autodesk.AutoCAD.ApplicationServices.Application;
 using AdWin = Autodesk.Windows;
 using Nemetschek.AutoCad.LayersConvertor.Services;
 
@@ -29,19 +24,22 @@ namespace Nemetschek.AutoCad.LayersConvertor
             throw new ApplicationException("Applivation terminal exception!");
         }
 
+        
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DeleteObject([In] IntPtr hObject);
 
-        //public static ImageSource ImageSourceForBitmap(Bitmap bmp)
-        //{
-        //    var handle = bmp.GetHbitmap();
-        //    try
-        //    {
-        //        return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-        //    }
-        //    finally { DeleteObject(handle); }
-        //}
+        /*
+        public static ImageSource ImageSourceForBitmap(Bitmap bmp)
+        {
+            var handle = bmp.GetHbitmap();
+            try
+            {
+                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }
+            finally { DeleteObject(handle); }
+        }
+        */
 
         private const string myTabId = "Nemetschek Tool";
 
@@ -49,10 +47,11 @@ namespace Nemetschek.AutoCad.LayersConvertor
         public void TAddRibbon()
         {
             var ribbonControl = RibbonServices.RibbonPaletteSet.RibbonControl;
-            var ribbonTab = new AdWin.RibbonTab();
-
-            ribbonTab.Title = "Custom Ribbon";
-            ribbonTab.Id = myTabId;
+            var ribbonTab = new AdWin.RibbonTab
+            {
+                Title = "Custom Ribbon",
+                Id = myTabId
+            };
             ribbonControl.Tabs.Add(ribbonTab);
 
             AddPanelGetEntity(ribbonTab);
@@ -65,21 +64,24 @@ namespace Nemetschek.AutoCad.LayersConvertor
 
         #region Add Panel Items
 
-        private void AddPanelGetEntity(AdWin.RibbonTab ribbonTab)
+        private static void AddPanelGetEntity(AdWin.RibbonTab ribbonTab)
         {
-            var ribbonPanelSource = new AdWin.RibbonPanelSource();
-            ribbonPanelSource.Title = "Select Entity";
-
-            var ribbonPanel = new AdWin.RibbonPanel();
-            ribbonPanel.Source = ribbonPanelSource;
+            var ribbonPanelSource = new AdWin.RibbonPanelSource
+            {
+                Title = "Select Entity"
+            };
+            var ribbonPanel = new AdWin.RibbonPanel
+            {
+                Source = ribbonPanelSource
+            };
             ribbonTab.Panels.Add(ribbonPanel);
 
             var ribbonButtonGetEntity = new AdWin.RibbonButton
             {
                 Text = "Get Custom Entity",
                 ShowText = true,
-                //ribbonButtonGetEntity.Image = ImageSourceForBitmap(Resource.smiley_16x16_png);
-                //ribbonButtonGetEntity.LargeImage = ImageSourceForBitmap(Resource.smiley_32x32_png);
+                //ribbonButtonGetEntity.Image = ImageSourceForBitmap(Resource.smiley_16x16_png); //TODO
+                //ribbonButtonGetEntity.LargeImage = ImageSourceForBitmap(Resource.smiley_32x32_png); //TODO
                 ShowImage = true,
                 Size = AdWin.RibbonItemSize.Large,
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
@@ -89,7 +91,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
             ribbonPanelSource.Items.Add(ribbonButtonGetEntity);
         }
 
-        private void AddPanelEntityLine(AdWin.RibbonTab ribbonTab)
+        private static void AddPanelEntityLine(AdWin.RibbonTab ribbonTab)
         {
             var ribbonPanelSource = new AdWin.RibbonPanelSource();
             ribbonPanelSource.Title = "Line";
@@ -110,11 +112,12 @@ namespace Nemetschek.AutoCad.LayersConvertor
             ribbonPanelSource.Items.Add(ribbonButtonAddLine);
         }
 
-        private void AddPanelEntityCircle(AdWin.RibbonTab ribbonTab)
+        private static void AddPanelEntityCircle(AdWin.RibbonTab ribbonTab)
         {
-            var ribbonPanelSource = new AdWin.RibbonPanelSource();
-            ribbonPanelSource.Title = "Circles";
-
+            var ribbonPanelSource = new AdWin.RibbonPanelSource
+            {
+                Title = "Circles"
+            };
             var ribbonPanel = new AdWin.RibbonPanel
             {
                 Source = ribbonPanelSource
@@ -131,7 +134,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
             ribbonPanelSource.Items.Add(ribbonButtonAddLine);
         }
 
-        private void AddPanelEntityConvertor(AdWin.RibbonTab ribbonTab)
+        private static void AddPanelEntityConvertor(AdWin.RibbonTab ribbonTab)
         {
             var ribbonPanelSource = new AdWin.RibbonPanelSource();
             ribbonPanelSource.Title = "Convertors";
