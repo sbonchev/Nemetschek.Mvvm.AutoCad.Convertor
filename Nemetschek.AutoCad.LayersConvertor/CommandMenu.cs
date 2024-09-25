@@ -3,6 +3,10 @@ using Autodesk.AutoCAD.Ribbon;
 using System.Runtime.InteropServices;
 using AdWin = Autodesk.Windows;
 using Nemetschek.AutoCad.LayersConvertor.Services;
+using System.Windows;
+using System.Windows.Media.Imaging;
+using System.Drawing;
+
 
 namespace Nemetschek.AutoCad.LayersConvertor
 {
@@ -24,22 +28,27 @@ namespace Nemetschek.AutoCad.LayersConvertor
             throw new ApplicationException("Applivation terminal exception!");
         }
 
-        
+        /// <summary>
+        /// Avoid unmanage leak
+        /// </summary>
+        /// <param name="hObject"></param>
+        /// <returns></returns>
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DeleteObject([In] IntPtr hObject);
 
-        /*
-        public static ImageSource ImageSourceForBitmap(Bitmap bmp)
+        private static System.Windows.Media.ImageSource ImageSourceForBitmap(Bitmap bmp)
         {
-            var handle = bmp.GetHbitmap();
+            IntPtr handle = bmp.GetHbitmap();
             try
             {
-                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             }
-            finally { DeleteObject(handle); }
+            finally 
+            { 
+                DeleteObject(handle); 
+            }
         }
-        */
 
         private const string myTabId = "Nemetschek Tool";
 
@@ -80,8 +89,8 @@ namespace Nemetschek.AutoCad.LayersConvertor
             {
                 Text = "Get Custom Entity",
                 ShowText = true,
-                //ribbonButtonGetEntity.Image = ImageSourceForBitmap(Resource.smiley_16x16_png); //TODO
-                //ribbonButtonGetEntity.LargeImage = ImageSourceForBitmap(Resource.smiley_32x32_png); //TODO
+                //Image = ImageSourceForBitmap(Resource.smiley_16x16_png),
+                //LargeImage = ImageSourceForBitmap(Resource.smiley_32x32_png),
                 ShowImage = true,
                 Size = AdWin.RibbonItemSize.Large,
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
@@ -93,15 +102,9 @@ namespace Nemetschek.AutoCad.LayersConvertor
 
         private static void AddPanelEntityLine(AdWin.RibbonTab ribbonTab)
         {
-            var ribbonPanelSource = new AdWin.RibbonPanelSource();
-            ribbonPanelSource.Title = "Line";
-
-            var ribbonPanel = new AdWin.RibbonPanel
-            {
-                Source = ribbonPanelSource
-            };
+            var ribbonPanelSource = new AdWin.RibbonPanelSource {  Title = "Line" };
+            var ribbonPanel = new AdWin.RibbonPanel { Source = ribbonPanelSource };
             ribbonTab.Panels.Add(ribbonPanel);
-
             var ribbonButtonAddLine = new AdWin.RibbonButton
             {
                 Text = "Add Custom Line",

@@ -68,30 +68,12 @@ namespace Nemetschek.AutoCad.LayersConvertor
                         // ---Open the Block Table record Modelspace for write:
                         var btr = trans.GetObject(bt![BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
-                        using (var circle1 = new Circle())
-                        using (var circle3 = new Circle())
-                        using (var circle2 = circle1.Clone() as Circle) // --- Create a new circle by copy
+                        using (var circle1 = CreateCircle(new Point3d(0, 0, 0),  radius:2, PrimitiveColors.Green, ref btr, trans))
+                        using (var circle3 = CreateCircle(new Point3d(30, 30, 0), radius:3, PrimitiveColors.Blue, ref btr, trans))
+                        // --- Create a new circle by copy:
+                        using (var circle2 = CreateCircle(new Point3d(10, 0, 10), radius:1, PrimitiveColors.Green, ref btr, trans, circle1.Clone() as Circle))
                         {
-                            circle1.Center = new Point3d(0, 0, 0);
-                            circle1.Radius = 2;
-                            circle1.ColorIndex = (int)PrimitiveColors.Green;
-                            // ---Add the new object to the BlockTable record
-                            btr?.AppendEntity(circle1);
-                            trans.AddNewlyCreatedDBObject(circle1, true);
-
-                            circle3.Center = new Point3d(30, 30, 0);
-                            circle3.Radius = 3;
-                            circle3.ColorIndex = (int)PrimitiveColors.Blue;
-                            btr?.AppendEntity(circle3);
-                            trans.AddNewlyCreatedDBObject(circle3, true);
-
-                            circle2!.Center = new Point3d(10, 0, 10);
-                            circle2!.ColorIndex = (int)PrimitiveColors.Red;
-                            circle2.Radius = 1;
-                            btr?.AppendEntity(circle2);
-                            trans.AddNewlyCreatedDBObject(circle2, true);
-
-                            // Create a circle objects' collection:
+                            // ---Create a circle objects' collection:
                             var col = new DBObjectCollection { circle1,
                                                                circle2,
                                                                circle3 };
@@ -105,6 +87,20 @@ namespace Nemetschek.AutoCad.LayersConvertor
                 doc.Editor.WriteMessage($"Exception occured: {ex.Message}, \n stack trace: {ex.StackTrace}");
                 //trans.Abort(); -- no need
             }
+        }
+
+        private static Circle CreateCircle(Point3d center, double radius, PrimitiveColors color, 
+                                    ref BlockTableRecord? btr, Transaction trans, Circle? circleClone = null)
+        {
+            var circle = circleClone != null ? circleClone 
+                                             : new Circle {Center = center,
+                                                           Radius = radius, 
+                                                           ColorIndex = (int)color };
+            // ---Add the new object to the BlockTable record
+            btr?.AppendEntity(circle);
+            trans.AddNewlyCreatedDBObject(circle, true);
+
+            return circle;
         }
 
         /// <summary>
