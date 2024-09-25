@@ -86,8 +86,8 @@ namespace Nemetschek.AutoCad.LayersConvertor
             {
                 Text = text,
                 ShowText = true,
-                //Image = ImageSourceForBitmap(Resource.smiley_16x16_png),
-                //LargeImage = ImageSourceForBitmap(Resource.smiley_32x32_png),
+                Image = ImageSourceForBitmap(Resources.lines_png),
+                LargeImage = ImageSourceForBitmap(Resources.lines_png),
                 ShowImage = true,
                 Size = AdWin.RibbonItemSize.Large,
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
