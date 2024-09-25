@@ -6,6 +6,9 @@ using Nemetschek.AutoCad.LayersConvertor.Services;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Drawing;
+using System.Windows.Input;
+using Autodesk.AutoCAD.Windows.Data;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Nemetschek.AutoCad.LayersConvertor
@@ -73,89 +76,45 @@ namespace Nemetschek.AutoCad.LayersConvertor
 
         #region Add Panel Items
 
-        private static void AddPanelGetEntity(AdWin.RibbonTab ribbonTab)
-        {
-            var ribbonPanelSource = new AdWin.RibbonPanelSource
-            {
-                Title = "Select Entity"
-            };
-            var ribbonPanel = new AdWin.RibbonPanel
-            {
-                Source = ribbonPanelSource
-            };
-            ribbonTab.Panels.Add(ribbonPanel);
 
-            var ribbonButtonGetEntity = new AdWin.RibbonButton
+        private static void AddPanelEntity(AdWin.RibbonTab ribbonTab, string title, string text, string prmName, ICommand command)
+        {
+            var ribbonPanelSource = new AdWin.RibbonPanelSource { Title = title };
+            var ribbonPanel = new AdWin.RibbonPanel { Source = ribbonPanelSource };
+            ribbonTab.Panels.Add(ribbonPanel);
+            var ribbonButtonAddLine = new AdWin.RibbonButton
             {
-                Text = "Get Custom Entity",
+                Text = text,
                 ShowText = true,
                 //Image = ImageSourceForBitmap(Resource.smiley_16x16_png),
                 //LargeImage = ImageSourceForBitmap(Resource.smiley_32x32_png),
                 ShowImage = true,
                 Size = AdWin.RibbonItemSize.Large,
                 Orientation = System.Windows.Controls.Orientation.Horizontal,
-                CommandParameter = "GetEntity ",
-                CommandHandler = new RelayRibbonCommand((_) => AutoCadObjectPrimitives.GetCustomEntity(), (_) => true)
+                CommandParameter = prmName,
+                CommandHandler = command
             };
-            ribbonPanelSource.Items.Add(ribbonButtonGetEntity);
+            ribbonPanelSource.Items.Add(ribbonButtonAddLine);
+        }
+
+        private static void AddPanelGetEntity(AdWin.RibbonTab ribbonTab)
+        {
+            AddPanelEntity(ribbonTab, "Entity", "Get Entity", "GetEntity ", new RelayRibbonCommand((_) => AutoCadObjectPrimitives.GetCustomEntity(), (_) => true));
         }
 
         private static void AddPanelEntityLine(AdWin.RibbonTab ribbonTab)
         {
-            var ribbonPanelSource = new AdWin.RibbonPanelSource {  Title = "Line" };
-            var ribbonPanel = new AdWin.RibbonPanel { Source = ribbonPanelSource };
-            ribbonTab.Panels.Add(ribbonPanel);
-            var ribbonButtonAddLine = new AdWin.RibbonButton
-            {
-                Text = "Add Custom Line",
-                ShowText = true,
-                CommandParameter = "AddLine ",
-                CommandHandler = new RelayRibbonCommand((_) => AutoCadObjectPrimitives.DrawLine(), (_) => true)
-            };
-            ribbonPanelSource.Items.Add(ribbonButtonAddLine);
+            AddPanelEntity(ribbonTab, "Line", "Add Line", "AddLine ", new RelayRibbonCommand((_) => AutoCadObjectPrimitives.DrawLine(), (_) => true));
         }
 
         private static void AddPanelEntityCircle(AdWin.RibbonTab ribbonTab)
         {
-            var ribbonPanelSource = new AdWin.RibbonPanelSource
-            {
-                Title = "Circles"
-            };
-            var ribbonPanel = new AdWin.RibbonPanel
-            {
-                Source = ribbonPanelSource
-            };
-            ribbonTab.Panels.Add(ribbonPanel);
-
-            var ribbonButtonAddLine = new AdWin.RibbonButton
-            {
-                Text = "Add Custom Circles",
-                ShowText = true,
-                CommandParameter = "AddCircles ",
-                CommandHandler = new RelayRibbonCommand((_) => AutoCadObjectPrimitives.DrawCircles(), (_) => true)
-            };
-            ribbonPanelSource.Items.Add(ribbonButtonAddLine);
+            AddPanelEntity(ribbonTab, "Circles", "Add Circles", "AddCircles ", new RelayRibbonCommand((_) => AutoCadObjectPrimitives.DrawCircles(), (_) => true));
         }
 
         private static void AddPanelEntityConvertor(AdWin.RibbonTab ribbonTab)
         {
-            var ribbonPanelSource = new AdWin.RibbonPanelSource();
-            ribbonPanelSource.Title = "Convertors";
-
-            var ribbonPanel = new AdWin.RibbonPanel
-            {
-                Source = ribbonPanelSource
-            };
-            ribbonTab.Panels.Add(ribbonPanel);
-
-            var ribbonButtonAddConvertor = new AdWin.RibbonButton
-            {
-                Text = "Layer Convertor",
-                ShowText = true,
-                CommandParameter = "LCU ",
-                CommandHandler = new RelayRibbonCommand((_) => new LayerService().UpdateLayer(), (_) => true)
-            };
-            ribbonPanelSource.Items.Add(ribbonButtonAddConvertor);
+            AddPanelEntity(ribbonTab, "Convertors", "L-Convertor", "LCU ", new RelayRibbonCommand((_) => new LayerService().UpdateLayer(), (_) => true));
         }
 
         #endregion
