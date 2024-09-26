@@ -59,7 +59,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
             var ribbonControl = RibbonServices.RibbonPaletteSet.RibbonControl;
             var ribbonTab = new AdWin.RibbonTab
             {
-                Title = "Custom Ribbon",
+                Title = "Custom Menu",
                 Id = myTabId
             };
             ribbonControl.Tabs.Add(ribbonTab);
@@ -85,7 +85,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
                 Text = text,
                 ShowText = true,
                 Image = imgSource, 
-                LargeImage = imgSource, 
+                //LargeImage = imgSource, 
                 ShowImage = true,
                 Size = AdWin.RibbonItemSize.Large,
                 Orientation = System.Windows.Controls.Orientation.Horizontal,

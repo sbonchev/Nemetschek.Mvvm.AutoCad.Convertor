@@ -6,6 +6,7 @@ using Nemetschek.AutoCad.LayersConvertor.Models;
 using Nemetschek.AutoCad.LayersConvertor.Services;
 using System.Collections.ObjectModel;
 using Nemetschek.AutoCad.LayersConvertor.Commands;
+using System.Windows.Threading;
 
 namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 {
@@ -127,11 +128,13 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
                 var dwgItems = _dwgPath.DwgPaths.Where(f => f.IsSelected == true);
                 foreach (var itm in dwgItems)
                 {
+
                     GetInfo.Info = $"Processing ( {i} of {totalCount} files) - {itm.SelectedPath}";
+                    GetInfo.ProgressInfo = (i / totalCount) * 100;
                     var msg = _layerService.ProcessLayer(itm.SelectedPath!, fromLayer, toLayer);
                     GetInfo.Info = msg;
-                    GetInfo.ProgressInfo = (i / totalCount) * 100;
                     i++;
+
                 }
             }
             finally

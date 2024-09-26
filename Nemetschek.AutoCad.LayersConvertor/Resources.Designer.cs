@@ -69,5 +69,14 @@ namespace Nemetschek.AutoCad.LayersConvertor {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+
+        internal static System.Drawing.Bitmap CheckBlue
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("CheckBlue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

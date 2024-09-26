@@ -9,7 +9,7 @@
         Topmost="True"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
-        Title="Layers' Convertor" Height="640" Width="660" >
+        Title="Layers' Convertor" Height="640" Width="660" MaxHeight="680" MaxWidth="720" MinHeight="480" MinWidth="520">
 
     <Grid Margin="10">
         <Grid.Resources>
@@ -27,12 +27,12 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="279*" />
-            <RowDefinition Height="205*" />
+            <RowDefinition Height="205" />
             <RowDefinition Height="120*" />
             <RowDefinition Height="30*" />
         </Grid.RowDefinitions>
 
-        <ListView  Name="lbFiles" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,10" SelectionMode="Single"  ItemsSource="{Binding Path=GetDwgPath}"  >  
+        <ListView  Name="lbFiles" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,10" SelectionMode="Single"  ItemsSource="{Binding Path=GetDwgPath}"  >
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
@@ -67,16 +67,9 @@
         </ComboBox>
 
 
-        <Button Name="btnOpenFile" Grid.Column="0" Grid.Row="2"  Margin="96,34,96,34" Command="{Binding Path=FileCommand}">Select Files</Button>
-        <Button Name="btnProcess" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Margin="114,36,86,34" Command="{Binding Path=ProcessCommand }" >
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleX="-0.054"/>
-                    <RotateTransform Angle="0.471"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Button.RenderTransform> Process
+        <Button Name="btnOpenFile" Grid.Column="0" Grid.Row="2"  Margin="96,34,96,34" Command="{Binding Path=FileCommand}" FontWeight="Bold" Foreground="White" Background="DarkBlue">Select Files</Button>
+        <Button Name="btnProcess" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Margin="114,36,86,34" Command="{Binding Path=ProcessCommand}" FontWeight="Bold" Foreground="White" Background="DarkBlue">
+            Process
         </Button>
 
         <StatusBar Grid.ColumnSpan="2" Grid.Row="3">
@@ -93,20 +86,20 @@
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
-            
+
             <StatusBarItem Grid.Column="0">
-                <TextBlock Name="lblInfo"  Text="{Binding Path=Info, UpdateSourceTrigger=Default, Mode=OneWay}" />
+                <TextBlock Name="lblInfo"  Text="{Binding Path=Info, Mode=OneWay}" />
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
-                <TextBlock Name="lblInfoAll"  Text="{Binding Path=InfoAll, UpdateSourceTrigger=Default, Mode=OneWay}" Foreground="{Binding Path=ProcessColor}"/>
+                <TextBlock Name="lblInfoAll"  Text="{Binding Path=InfoAll, Mode=TwoWay}" Foreground="{Binding Path=ProcessColor}"/>
             </StatusBarItem>
             <Separator Grid.Column="3" />
             <StatusBarItem Grid.Column="4">
-                <ProgressBar Name ="prgBar" Value="{Binding Path=ProgressInfo, Mode=OneWay}" Width="90" Height="16" />
+                <ProgressBar Name ="prgBar" Value="{Binding Path=ProgressInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Width="90" Height="16" Minimum="0" Maximum="100"/>
             </StatusBarItem>
         </StatusBar>
-        
+
     </Grid>
 
 </Window>
