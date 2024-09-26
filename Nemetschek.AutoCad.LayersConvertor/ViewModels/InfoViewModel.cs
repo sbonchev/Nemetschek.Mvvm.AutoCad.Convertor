@@ -5,19 +5,19 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 {
     public class InfoViewModel : BaseViewModel
     {
+        public InfoViewModel() 
+        {
+            _info = new();
+            _info.ProcessColor = new SolidColorBrush(Colors.DarkBlue);
+        }
 
-        private InfoModel? _info;
-
-        private InfoModel? _infoAll;
-
-        private int _progressInfo;
+        private readonly InfoModel _info;
 
         public string Info
         {
-            get => (_info ??= new InfoModel()).Text??"";
+            get => _info.Text??"";
             set
             {
-                _info ??= new InfoModel();
                 if (_info.Text == value)
                     return;
 
@@ -28,41 +28,42 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 
         public string InfoAll
         {
-            get => (_infoAll ??= new InfoModel()).Text ?? "";
+            get => _info.TextAll ?? "";
             set
             {
-                if ((_infoAll ??= new InfoModel()).Text == value)
+                if (_info.TextAll == value)
                     return;
 
-                _infoAll!.Text = value;
+                _info.TextAll = value;
                 OnPropertyChanged(nameof(InfoAll));
             }
         }
 
         public Brush ProcessColor
         {
-            get => (_infoAll ??= new InfoModel()).ProcessColor ?? new SolidColorBrush(Colors.DarkBlue);
+            get => _info.ProcessColor ?? new SolidColorBrush(Colors.DarkBlue);
             set
             {
-                if ((_infoAll ??= new InfoModel()).ProcessColor == value)
+                if (_info.ProcessColor == value)
                     return;
 
-                _infoAll!.ProcessColor = value;
+                _info.ProcessColor = value;
                 OnPropertyChanged(nameof(ProcessColor));
             }
         }
 
         public int ProgressInfo
         {
-            get => _progressInfo;
+            get => _info.ProgressInfo;
             set
             {
-                if (_progressInfo == value)
+                if (_info.ProgressInfo == value)
                     return;
 
-                _progressInfo = value;
+                _info.ProgressInfo = value;
                 OnPropertyChanged(nameof(ProgressInfo));
             }
         }
     }
+
 }
