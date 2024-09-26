@@ -10,8 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\bb_1.ico" />
+    <None Remove="Images\BB_Image.png" />
+    <None Remove="Images\CheckBlue.png" />
+    <None Remove="Images\Close.png" />
+    <None Remove="Images\lines-png.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="AutoCadDlls\" />
-    <Folder Include="Images\" />
     <Folder Include="Resources\" />
   </ItemGroup>
 
@@ -47,6 +54,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\bb_1.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BB_Image.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\CheckBlue.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Close.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\lines-png.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -67,9 +92,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Images\lines-png.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
