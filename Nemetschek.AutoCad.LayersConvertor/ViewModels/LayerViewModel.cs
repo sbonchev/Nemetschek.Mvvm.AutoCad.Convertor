@@ -6,6 +6,8 @@ using Nemetschek.AutoCad.LayersConvertor.Models;
 using Nemetschek.AutoCad.LayersConvertor.Services;
 using System.Collections.ObjectModel;
 using Nemetschek.AutoCad.LayersConvertor.Commands;
+using System.Windows.Threading;
+using System.Windows;
 
 namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 {
@@ -24,7 +26,7 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
             _info = new InfoViewModel();
 
             FileCommand = new RelayCommand(OpenFiles, fc => true);
-            ProcessCommand = new RelayCommand(ProcessFile, pc => _dwgPath!.DwgPaths!.Count > 0 && FromLayerNames!.Count > 0);
+            ProcessCommand = new RelayCommand( ProcessFile, pc => _dwgPath!.DwgPaths!.Count > 0 && FromLayerNames!.Count > 0);
 
             _isClear = false;
             GetInfo.ProcessColor = new SolidColorBrush(Colors.DarkGray);
@@ -92,7 +94,6 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
                         _dwgPath.DwgPaths?.Clear();
                         _isClear = false;
                     }
-
                     foreach (string filename in openFileDialog.FileNames)
                                                 dwgPaths.Add(new DwgPathModel
                                                 {
@@ -107,7 +108,7 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 
                 var sPath = dwgPaths.FirstOrDefault(s => s.IsSelected == true);
                 GetInfo.TextPath = sPath == null ? "No selected files"
-                                                    : GetInfo.TextPath = sPath?.SelectedPath;
+                                                 : GetInfo.TextPath = sPath?.SelectedPath;
             }
             finally
             {
@@ -131,13 +132,14 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
                 var dwgItems = _dwgPath.DwgPaths.Where(f => f.IsSelected == true);
                 foreach (var itm in dwgItems)
                 {
-
-                    GetInfo.TextPath = $"Processing ( {i} of {totalCount} files) - {itm.SelectedPath}";
+                    //ProcessDispatcher.Execute(() => GetInfo.ProgressInfo = (i / totalCount) * 100);
                     GetInfo.ProgressInfo = (i / totalCount) * 100;
-                    var msg = _layerService.ProcessLayer(itm.SelectedPath!, fromLayer, toLayer);
-                    GetInfo.TextPath = msg;
+                    GetInfo.TextPath = $"Processing ( {i} of {totalCount} files) - {itm.SelectedPath}";
+                    var prgStatus = _layerService.ProcessLayer(itm.SelectedPath!, fromLayer, toLayer);
+                    GetInfo.TextPath = prgStatus.Text;
+                    GetInfo.ProcessColor = prgStatus.Status == Enums.ProcessStatus.Succed ? new SolidColorBrush(Colors.DarkGreen)
+                                                                                          : new SolidColorBrush(Colors.Red);                    
                     i++;
-
                 }
             }
             finally
@@ -186,4 +188,17 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
         }
 
     }
+
+    public static class ProcessDispatcher
+    {
+        public static void Execute(Action action)
+        {
+            if (Application.Current is null || Application.Current.Dispatcher is null)
+                return;
+
+            // ---Marshall to Main Thread:
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, action);
+        }
+    }
+
 }

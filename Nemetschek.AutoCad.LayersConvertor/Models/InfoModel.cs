@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿
+using Nemetschek.AutoCad.LayersConvertor.Enums;
 
 namespace Nemetschek.AutoCad.LayersConvertor.Models
 {
@@ -6,10 +7,8 @@ namespace Nemetschek.AutoCad.LayersConvertor.Models
     {
         public string? Text { get; set; }
 
-        public string? TextAll { get; set; }
-
-        public Brush? ProcessColor { get; set; }
-
-        public int ProgressInfo { get; set; }
+        public ProcessStatus Status { get; set; }
     }
+
+   
 }

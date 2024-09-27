@@ -5,6 +5,7 @@ using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.EditorInput;
 using AppDoc = Autodesk.AutoCAD.ApplicationServices.Application;
 using Line = Autodesk.AutoCAD.DatabaseServices.Line;
+using Nemetschek.AutoCad.LayersConvertor.Enums;
 
 
 namespace Nemetschek.AutoCad.LayersConvertor
@@ -22,12 +23,11 @@ namespace Nemetschek.AutoCad.LayersConvertor
         {
             Document doc = AppDoc.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
-
             try
             {
                 using (var line1 = CreateLine(fromPoint: new Point3d(10, 30, 0), toPoint: new Point3d(30, 60, 0), PrimitiveColors.Red, LineWeight.LineWeight050))
                 using (var line2 = CreateLine(fromPoint: new Point3d(60, 90, 0), toPoint: new Point3d(90, 120, 0), PrimitiveColors.Green, LineWeight.LineWeight080))
-                using (var line3 = CreateLine(fromPoint: new Point3d(120, 150, 0), toPoint: new Point3d(150, 1500, 0), PrimitiveColors.Blue, LineWeight.LineWeight100))
+                using (var line3 = CreateLine(fromPoint: new Point3d(120, 150, 0), toPoint: new Point3d(150, 1500, 0), PrimitiveColors.Yellow, LineWeight.LineWeight100))
                 {
                     var lines = new List<Line> { line1, line2, line3 };
                     using (doc.LockDocument())
@@ -141,12 +141,6 @@ namespace Nemetschek.AutoCad.LayersConvertor
             }
         }
     }
-
-    internal enum PrimitiveColors
-    {
-        Red = 1,
-        Green = 3,
-        Blue = 5
-    }
+  
 
 }

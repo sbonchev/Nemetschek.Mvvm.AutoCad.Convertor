@@ -1,6 +1,8 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using Nemetschek.AutoCad.LayersConvertor.Enums;
+using Nemetschek.AutoCad.LayersConvertor.Models;
 
 namespace Nemetschek.AutoCad.LayersConvertor.Services
 {
@@ -34,11 +36,11 @@ namespace Nemetschek.AutoCad.LayersConvertor.Services
         /// <param name="dwgPath">Drawing path</param>
         /// <param name="oldLayer">From layer 1</param>
         /// <param name="newLayer">To Layer 2</param>
-        internal string ProcessLayer(string dwgPath, string oldLayer, string newLayer)
+        internal InfoModel ProcessLayer(string dwgPath, string oldLayer, string newLayer)
         {
             var doc = GetDocument(dwgPath);
             if (doc == null)
-                return "Invalid drawing path!";
+                return new InfoModel { Text = "Invalid drawing path!", Status = ProcessStatus.Failed };
 
             doc.GetDocumentWindow().Activate();
             var db = doc.Database;
@@ -70,7 +72,7 @@ namespace Nemetschek.AutoCad.LayersConvertor.Services
                         {
                             trans.Commit();
                             db.SaveAs(dwgPath, DwgVersion.Current);
-                            return $"Layer: {oldLayer} has been converted to {newLayer} successfuly!";
+                            return new InfoModel { Text = $"Layer: {oldLayer} has been converted to {newLayer} successfuly!", Status = ProcessStatus.Succed }; ;
                         }
                         else
                             throw new Autodesk.AutoCAD.Runtime.Exception(ErrorStatus.CopyDoesNotExist, $"Cannot find layer: {oldLayer}");
@@ -80,7 +82,11 @@ namespace Nemetschek.AutoCad.LayersConvertor.Services
             catch (Autodesk.AutoCAD.Runtime.Exception ex)
             {
                 editor.WriteMessage($"Processing Error (status - {ex.ErrorStatus}): {ex.Message} ");
-                return $"Layer {oldLayer} conversion to {newLayer} failed, \n error status - {ex.ErrorStatus})!";
+                return new InfoModel
+                {
+                    Text = $"Layer {oldLayer} conversion to {newLayer} failed, \n error status - {ex.ErrorStatus})!",
+                    Status = ProcessStatus.Failed
+                };
             }
             finally
             {
