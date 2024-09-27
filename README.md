@@ -8,15 +8,16 @@
 ## 2. AutoCad Entity Layers Convertor
 *  Load selected drawing (.dwg) chart-files
 *  Load all layers to selected chart-file
-*  Select layer (from destination) and converted layer(end destination).
-    Imlementation logic(very similar to previous one, see - AutoCad.LayersConvertor proj.)
+*  Conver one drawing layer to theother one:
+  - Select a layer (from destination) and another one from the same schema (end destination),
+    with imlementation logic(very similar to previous one, see - EDD AutoCad.LayersConvertor proj.)
 ## 3. WPF MVVM Pattern GUI Implemetation
 *  Models
 *  ModelView
 *  Services (BL seperation)
 *  Views
-** MVVM pattern implementation
-** Execute Comand pattern implementation
+- MVVM pattern implementation
+- Execute Comand pattern implementation
 ## 4. Create AutoCad PlugIns IExtensionApplication Implementation
 ## 5. IoC Services implementation - TODO
 ## LayersConvertor Instalation For Testing
