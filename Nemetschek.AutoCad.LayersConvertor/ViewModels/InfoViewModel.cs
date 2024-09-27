@@ -1,69 +1,70 @@
-﻿using Nemetschek.AutoCad.LayersConvertor.Models;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
 namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 {
+    /// <summary>
+    /// Presents files and processed files info.
+    /// </summary>
     public class InfoViewModel : BaseViewModel
     {
-        public InfoViewModel() 
-        {
-            _info = new();
-            _info.ProcessColor = new SolidColorBrush(Colors.DarkBlue);
-        }
 
-        private readonly InfoModel _info;
-
-        public string Info
+        private string? _text;
+        public string? Text
         {
-            get => _info.Text??"";
+            get => _text;
             set
             {
-                if (_info.Text == value)
+                if (_text == value)
                     return;
 
-                _info.Text = value;
-                OnPropertyChanged(nameof(Info));
+                _text = value??"";
+                OnPropertyChanged(nameof(Text));
             }
         }
 
-        public string InfoAll
+        private string? _textPath;
+        public string? TextPath
         {
-            get => _info.TextAll ?? "";
+            get => _textPath;
             set
             {
-                if (_info.TextAll == value)
+                if (_textPath == value)
                     return;
 
-                _info.TextAll = value;
-                OnPropertyChanged(nameof(InfoAll));
+                _textPath = value ?? "";
+                OnPropertyChanged(nameof(TextPath));
             }
         }
 
-        public Brush ProcessColor
+        private Brush? _processColor;
+        public Brush? ProcessColor
         {
-            get => _info.ProcessColor ?? new SolidColorBrush(Colors.DarkBlue);
+            get => _processColor;
             set
             {
-                if (_info.ProcessColor == value)
+                if (_processColor == value)
                     return;
 
-                _info.ProcessColor = value;
+                _processColor = value;
                 OnPropertyChanged(nameof(ProcessColor));
             }
         }
 
+        private int _progressInfo;
         public int ProgressInfo
         {
-            get => _info.ProgressInfo;
+            get => _progressInfo;
             set
             {
-                if (_info.ProgressInfo == value)
+                if (_progressInfo == value)
                     return;
 
-                _info.ProgressInfo = value;
+                _progressInfo = value;
                 OnPropertyChanged(nameof(ProgressInfo));
             }
         }
+
+        
     }
 
 }

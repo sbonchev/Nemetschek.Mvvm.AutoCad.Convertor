@@ -28,8 +28,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="279*" />
             <RowDefinition Height="205" />
-            <RowDefinition Height="120*" />
-            <RowDefinition Height="30*" />
+            <RowDefinition Height="120" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
         <ListView  Name="lbFiles" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,10" SelectionMode="Single"  ItemsSource="{Binding Path=GetDwgPath}"  >
@@ -67,8 +67,8 @@
         </ComboBox>
 
 
-        <Button Name="btnOpenFile" Grid.Column="0" Grid.Row="2"  Margin="96,34,96,34" Command="{Binding Path=FileCommand}" FontWeight="Bold" Foreground="White" Background="DarkBlue">Select Files</Button>
-        <Button Name="btnProcess" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Margin="114,36,86,34" Command="{Binding Path=ProcessCommand}" FontWeight="Bold" Foreground="White" Background="DarkBlue">
+        <Button Name="btnOpenFile" Grid.Column="0" Grid.Row="2"  Margin="96,34,96,34" Command="{Binding Path=FileCommand}" FontWeight="Bold" Foreground="White" Background="DarkBlue"  HorizontalAlignment="Center" VerticalAlignment="Top" MinHeight="35" MinWidth="100">Select Files</Button>
+        <Button Name="btnProcess" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Margin="114,36,86,34" Command="{Binding Path=ProcessCommand}" FontWeight="Bold" Foreground="White" Background="DarkBlue" HorizontalAlignment="Center" VerticalAlignment="Top" MinHeight="35" MinWidth="100">
             Process
         </Button>
 
@@ -88,15 +88,15 @@
             </StatusBar.ItemsPanel>
 
             <StatusBarItem Grid.Column="0">
-                <TextBlock Name="lblInfo"  Text="{Binding Path=Info, Mode=OneWay}" />
+                <TextBlock Name="lblInfo"  Text="{Binding Path=GetInfo.Text, UpdateSourceTrigger=PropertyChanged}" />
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
-                <TextBlock Name="lblInfoAll"  Text="{Binding Path=InfoAll, Mode=TwoWay}" Foreground="{Binding Path=ProcessColor}"/>
+                <TextBlock Name="lblInfoAll"  Text="{Binding Path=GetInfo.TextPath, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding Path=GetInfo.ProcessColor, UpdateSourceTrigger=PropertyChanged}"/>
             </StatusBarItem>
             <Separator Grid.Column="3" />
             <StatusBarItem Grid.Column="4">
-                <ProgressBar Name ="prgBar" Value="{Binding Path=ProgressInfo, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Width="90" Height="16" Minimum="0" Maximum="100"/>
+                <ProgressBar Name ="prgBar" Value="{Binding Path=GetInfo.ProgressInfo, UpdateSourceTrigger=PropertyChanged}" Width="90" Height="16" Minimum="0" Maximum="100" HorizontalAlignment="Center"  MinWidth="120"/>
             </StatusBarItem>
         </StatusBar>
 

@@ -4,6 +4,7 @@ using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.EditorInput;
 using AppDoc = Autodesk.AutoCAD.ApplicationServices.Application;
+using Line = Autodesk.AutoCAD.DatabaseServices.Line;
 
 
 namespace Nemetschek.AutoCad.LayersConvertor
@@ -21,25 +22,27 @@ namespace Nemetschek.AutoCad.LayersConvertor
         {
             Document doc = AppDoc.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
-            var line = new Line
-            {
-                StartPoint = new Point3d(10, 20, 0),
-                ColorIndex = (int)PrimitiveColors.Blue,
-                EndPoint = new Point3d(20, 20, 0)
-            };
+
             try
             {
-                using (doc.LockDocument())
+                using (var line1 = CreateLine(fromPoint: new Point3d(10, 30, 0), toPoint: new Point3d(30, 60, 0), PrimitiveColors.Red, LineWeight.LineWeight050))
+                using (var line2 = CreateLine(fromPoint: new Point3d(60, 90, 0), toPoint: new Point3d(90, 120, 0), PrimitiveColors.Green, LineWeight.LineWeight080))
+                using (var line3 = CreateLine(fromPoint: new Point3d(120, 150, 0), toPoint: new Point3d(150, 1500, 0), PrimitiveColors.Blue, LineWeight.LineWeight100))
                 {
-                    using (Transaction acTrans = db.TransactionManager.StartTransaction())
+                    var lines = new List<Line> { line1, line2, line3 };
+                    using (doc.LockDocument())
                     {
-                        var bt = acTrans.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
-                        var btr = acTrans.GetObject(bt![BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
-
-                        btr?.AppendEntity(line);
-                        acTrans.AddNewlyCreatedDBObject(line, true);
-
-                        acTrans.Commit();
+                        using (Transaction acTrans = db.TransactionManager.StartTransaction())
+                        {
+                            var bt = acTrans.GetObject(db.BlockTableId, OpenMode.ForRead) as BlockTable;
+                            var btr = acTrans.GetObject(bt![BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
+                            foreach (Line line in lines)
+                            {
+                                btr?.AppendEntity(line);
+                                acTrans.AddNewlyCreatedDBObject(line, true);
+                            }
+                            acTrans.Commit();
+                        }
                     }
                 }
             }
@@ -47,6 +50,17 @@ namespace Nemetschek.AutoCad.LayersConvertor
             {
                 doc.Editor.WriteMessage($"Draw Line Error (status - {ex.ErrorStatus}): {ex.Message} ");
             }
+        }
+
+        private static Line CreateLine(Point3d fromPoint, Point3d toPoint, PrimitiveColors color, LineWeight weight)
+        {
+            return new Line
+            {
+                StartPoint = fromPoint,
+                ColorIndex = (int)color,
+                EndPoint = toPoint,
+                LineWeight = weight
+            };
         }
 
         /// <summary>
@@ -68,10 +82,10 @@ namespace Nemetschek.AutoCad.LayersConvertor
                         // ---Open the Block Table record Modelspace for write:
                         var btr = trans.GetObject(bt![BlockTableRecord.ModelSpace], OpenMode.ForWrite) as BlockTableRecord;
 
-                        using (var circle1 = CreateCircle(new Point3d(0, 0, 0),  radius:2, PrimitiveColors.Green, ref btr, trans))
-                        using (var circle3 = CreateCircle(new Point3d(30, 30, 0), radius:3, PrimitiveColors.Blue, ref btr, trans))
+                        using (var circle1 = CreateCircle(new Point3d(0, 0, 0),  radius:30, PrimitiveColors.Green, ref btr, trans))
+                        using (var circle3 = CreateCircle(new Point3d(30, 30, 0), radius:40, PrimitiveColors.Blue, ref btr, trans))
                         // --- Create a new circle by copy:
-                        using (var circle2 = CreateCircle(new Point3d(10, 0, 10), radius:1, PrimitiveColors.Green, ref btr, trans, circle1.Clone() as Circle))
+                        using (var circle2 = CreateCircle(new Point3d(10, 10, 10), radius:50, PrimitiveColors.Red, ref btr, trans))
                         {
                             // ---Create a circle objects' collection:
                             var col = new DBObjectCollection { circle1,

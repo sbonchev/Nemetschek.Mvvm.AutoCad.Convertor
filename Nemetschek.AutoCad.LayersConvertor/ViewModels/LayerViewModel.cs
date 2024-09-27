@@ -6,10 +6,12 @@ using Nemetschek.AutoCad.LayersConvertor.Models;
 using Nemetschek.AutoCad.LayersConvertor.Services;
 using System.Collections.ObjectModel;
 using Nemetschek.AutoCad.LayersConvertor.Commands;
-using System.Windows.Threading;
 
 namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 {
+    /// <summary>
+    /// Select drawing files and layers' processing
+    /// </summary>
     public class LayerViewModel : BaseViewModel
     {
         public LayerViewModel()
@@ -25,6 +27,8 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
             ProcessCommand = new RelayCommand(ProcessFile, pc => _dwgPath!.DwgPaths!.Count > 0 && FromLayerNames!.Count > 0);
 
             _isClear = false;
+            GetInfo.ProcessColor = new SolidColorBrush(Colors.DarkGray);
+            GetInfo.TextPath = "Select drawing file(s)!";
         }
 
         private readonly LayerService _layerService;
@@ -99,12 +103,11 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
                 var totalCount = dwgPaths.Count;
                 GetInfo.ProcessColor = new SolidColorBrush(Colors.DarkGray);
                 if (totalCount > 0)
-                {
-                    GetInfo.InfoAll = $" {totalCount} files";
-                    //_dwgPath.DwgPaths[0]!.IsSelected = true;
-                }
-                else
-                    GetInfo.Info = "No selected files";
+                    GetInfo.Text = $" {totalCount} files";
+
+                var sPath = dwgPaths.FirstOrDefault(s => s.IsSelected == true);
+                GetInfo.TextPath = sPath == null ? "No selected files"
+                                                    : GetInfo.TextPath = sPath?.SelectedPath;
             }
             finally
             {
@@ -129,10 +132,10 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
                 foreach (var itm in dwgItems)
                 {
 
-                    GetInfo.Info = $"Processing ( {i} of {totalCount} files) - {itm.SelectedPath}";
+                    GetInfo.TextPath = $"Processing ( {i} of {totalCount} files) - {itm.SelectedPath}";
                     GetInfo.ProgressInfo = (i / totalCount) * 100;
                     var msg = _layerService.ProcessLayer(itm.SelectedPath!, fromLayer, toLayer);
-                    GetInfo.Info = msg;
+                    GetInfo.TextPath = msg;
                     i++;
 
                 }
@@ -167,7 +170,7 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
                 {
                     FromLayerNames[0].IsSelected = true;
                     ToLayerNames[0].IsSelected = true;
-                    GetInfo.Info = path?.SelectedPath??"";
+                    GetInfo.TextPath = path?.SelectedPath??"";
                 }
             }
         }
