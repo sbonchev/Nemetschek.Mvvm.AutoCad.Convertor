@@ -1,17 +1,44 @@
 ﻿using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.AutoCAD.Runtime;
+using Microsoft.Extensions.DependencyInjection;
 using Nemetschek.AutoCad.LayersConvertor.Enums;
 using Nemetschek.AutoCad.LayersConvertor.Models;
+using Nemetschek.AutoCad.LayersConvertor.ViewModels;
+using System;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace Nemetschek.AutoCad.LayersConvertor.Services
 {
-    public class LayerService
+    public class LayerService : ILayerService
     {
-        [CommandMethod("LCU")] // CommandFlags.Session
+        public LayerService()
+        {
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+        }
+
+        [CommandMethod("LCU")]
         public void UpdateLayer()
         {
-            new LayerConvertorWindow().ShowDialog();
+            var lvm = _serviceProvider.GetRequiredService<LayerViewModel>();
+            var mainWindow = new LayerConvertorWindow(lvm);
+            mainWindow?.ShowDialog();
+        }
+
+        //public static LayerService GetLayerService => CallConvThiscall;
+
+
+        private ServiceProvider _serviceProvider=null;
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            services.AddTransient<LayerViewModel>();
+            //services.AddTransient<ILayerService, LayerService>();
+            services.AddTransient<ICommand, RelayRibbonCommand>();
+            //services.AddSingleton<LayerConvertorWindow>();
+            _serviceProvider = services.BuildServiceProvider();            
         }
 
         private Document? GetDocument(string dwgPath)
@@ -36,7 +63,7 @@ namespace Nemetschek.AutoCad.LayersConvertor.Services
         /// <param name="dwgPath">Drawing path</param>
         /// <param name="oldLayer">From layer 1</param>
         /// <param name="newLayer">To Layer 2</param>
-        internal InfoModel ProcessLayer(string dwgPath, string oldLayer, string newLayer)
+        public InfoModel ProcessLayer(string dwgPath, string oldLayer, string newLayer)
         {
             var doc = GetDocument(dwgPath);
             if (doc == null)
@@ -97,7 +124,9 @@ namespace Nemetschek.AutoCad.LayersConvertor.Services
         /// <summary>
         /// Get all available doc's layers
         /// </summary>
-        internal List<string> GetlayerList(string dwgPath)
+        /// <param name="dwgPath">Drawing file path.</param>
+        /// <returns></returns>
+        public List<string> GetlayerList(string dwgPath)
         {
             var acDoc = GetDocument(dwgPath);
             if (acDoc == null)

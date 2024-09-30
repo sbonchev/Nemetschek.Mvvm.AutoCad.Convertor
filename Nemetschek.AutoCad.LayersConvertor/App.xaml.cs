@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Nemetschek.AutoCad.LayersConvertor.Services;
 using Nemetschek.AutoCad.LayersConvertor.ViewModels;
+using System;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Nemetschek.AutoCad.LayersConvertor
 {
@@ -9,19 +12,29 @@ namespace Nemetschek.AutoCad.LayersConvertor
     /// </summary>
     public partial class App : Application
     {
-        private ServiceProvider serviceProvider;
         public App()
         {
-            var services = new ServiceCollection();
-            ConfigureServices(services);
-            serviceProvider = services.BuildServiceProvider();
+          
         }
-        private void ConfigureServices(ServiceCollection services)
-        {
-            //services.AddDbContext<ProductContext>(options =>
-            //{});
-            services.AddSingleton<LayerViewModel>(); // todo
-        }
+        //private void ConfigureServices(IServiceCollection services)
+        //{
+        //    services.AddTransient<ILayerService, LayerService>();
+        //    services.AddTransient<LayerViewModel>();
+        //    services.AddTransient<ICommand, RelayRibbonCommand>();
+        //    //services.AddSingleton<LayerConvertorWindow>();
+        //    var serviceProvider = services.BuildServiceProvider();
+
+        //    //var mainWindow = serviceProvider.GetRequiredService<LayerConvertorWindow>();
+        //    //mainWindow?.Show();
+        //    //new LayerConvertorWindow().ShowDialog();
+        //}
+
+        //private void OnStartupEvent(StartupEventArgs e)
+        //{
+        //    //var mainWindow = serviceProvider.GetService<LayerConvertorWindow>();
+        //    //mainWindow?.Show();
+        //}
+
     }
 
 }
