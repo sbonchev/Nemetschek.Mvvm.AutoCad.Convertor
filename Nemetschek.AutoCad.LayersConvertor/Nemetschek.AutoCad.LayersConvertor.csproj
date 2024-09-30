@@ -10,11 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\bb_1.ico" />
-    <None Remove="Images\BB_Image.png" />
-    <None Remove="Images\CheckBlue.png" />
-    <None Remove="Images\Close.png" />
-    <None Remove="Images\lines-png.png" />
+    <None Remove="Images\cad_circle_32.png" />
+    <None Remove="Images\cad_doc_32.png" />
+    <None Remove="Images\cad_draw_32.png" />
+    <None Remove="Images\cad_lines2_32.png" />
+    <None Remove="Images\cad_process2_32.png" />
+    <None Remove="Images\cad_process_32.png" />
+    <None Remove="Images\cad_select_32.png" />
+    <None Remove="Images\cad_xyz_32.png" />
+    <None Remove="Images\lines-png_32.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.8" />
   </ItemGroup>
 
@@ -54,21 +59,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\bb_1.ico">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\BB_Image.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\CheckBlue.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\Close.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\lines-png.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Images\cad_circle_32.png" />
+    <Resource Include="Images\cad_doc_32.png" />
+    <Resource Include="Images\cad_draw_32.png" />
+    <Resource Include="Images\cad_lines2_32.png" />
+    <Resource Include="Images\cad_process2_32.png" />
+    <Resource Include="Images\cad_process_32.png" />
+    <Resource Include="Images\cad_select_32.png" />
+    <Resource Include="Images\cad_xyz_32.png" />
+    <Resource Include="Images\lines-png_32.png" />
   </ItemGroup>
 
   <ItemGroup>

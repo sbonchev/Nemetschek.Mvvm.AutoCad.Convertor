@@ -118,10 +118,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lines_png" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Images\lines-png.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="cad_circle_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\cad_circle_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CheckBlue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\CheckBlue.png;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="cad_doc_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\cad_doc_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cad_draw_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\cad_draw_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cad_lines2_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\cad_lines2_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cad_process2_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\cad_process2_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cad_process_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\cad_process_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cad_select_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\cad_select_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cad_xyz_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\cad_xyz_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lines_png_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Images\lines-png_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

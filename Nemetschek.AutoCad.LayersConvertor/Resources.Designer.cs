@@ -63,18 +63,89 @@ namespace Nemetschek.AutoCad.LayersConvertor {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap lines_png {
+        internal static System.Drawing.Bitmap cad_circle_32 {
             get {
-                object obj = ResourceManager.GetObject("lines_png", resourceCulture);
+                object obj = ResourceManager.GetObject("cad_circle_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-
-        internal static System.Drawing.Bitmap CheckBlue
-        {
-            get
-            {
-                object obj = ResourceManager.GetObject("CheckBlue", resourceCulture);
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cad_doc_32 {
+            get {
+                object obj = ResourceManager.GetObject("cad_doc_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cad_draw_32 {
+            get {
+                object obj = ResourceManager.GetObject("cad_draw_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cad_lines2_32 {
+            get {
+                object obj = ResourceManager.GetObject("cad_lines2_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cad_process_32 {
+            get {
+                object obj = ResourceManager.GetObject("cad_process_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cad_process2_32 {
+            get {
+                object obj = ResourceManager.GetObject("cad_process2_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cad_select_32 {
+            get {
+                object obj = ResourceManager.GetObject("cad_select_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cad_xyz_32 {
+            get {
+                object obj = ResourceManager.GetObject("cad_xyz_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap lines_png_32 {
+            get {
+                object obj = ResourceManager.GetObject("lines_png_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

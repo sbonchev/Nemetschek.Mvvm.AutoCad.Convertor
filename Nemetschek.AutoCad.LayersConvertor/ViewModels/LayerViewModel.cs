@@ -168,10 +168,10 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
                 foreach (var itm1 in ds1)
                     ToLayerNames?.Add(new LayerModel { LayerName = itm1 });
 
-                if (ds.Count > 0)
+                if (FromLayerNames != null && FromLayerNames.Count > 0)
                 {
-                    FromLayerNames[0].IsSelected = true;
-                    ToLayerNames[0].IsSelected = true;
+                    FromLayerNames!.First().IsSelected = true;
+                    ToLayerNames!.First().IsSelected = true;
                     GetInfo.TextPath = path?.SelectedPath??"";
                 }
             }

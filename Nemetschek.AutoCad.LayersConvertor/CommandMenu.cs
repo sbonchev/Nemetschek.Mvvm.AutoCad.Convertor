@@ -99,7 +99,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
         {
             AddPanelEntity(ribbonTab, "Entity", "Get Entity", "GetEntity ",
                 new RelayRibbonCommand((_) => AutoCadObjectPrimitives.GetCustomEntity(), (_) => true),
-                ImageSourceForBitmap(Resources.lines_png)
+                ImageSourceForBitmap(Resources.cad_select_32)
             );
         }
 
@@ -107,7 +107,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
         {
             AddPanelEntity(ribbonTab, "Line", "Add Line", "AddLine ", 
                 new RelayRibbonCommand((_) => AutoCadObjectPrimitives.DrawLine(), (_) => true),
-                ImageSourceForBitmap(Resources.lines_png)
+                ImageSourceForBitmap(Resources.lines_png_32)
              );
         }
 
@@ -115,7 +115,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
         {
             AddPanelEntity(ribbonTab, "Circles", "Add Circles", "AddCircles ", 
                 new RelayRibbonCommand((_) => AutoCadObjectPrimitives.DrawCircles(), (_) => true),
-                ImageSourceForBitmap(Resources.lines_png)
+                ImageSourceForBitmap(Resources.cad_circle_32)
             );
         }
 
@@ -123,7 +123,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
         {
             AddPanelEntity(ribbonTab, "Convertors", "L-Convertor", "LCU ", 
                 new RelayRibbonCommand((_) => new LayerService().UpdateLayer(), (_) => true),
-                ImageSourceForBitmap(Resources.lines_png)
+                ImageSourceForBitmap(Resources.cad_process2_32)
             );
         }
 

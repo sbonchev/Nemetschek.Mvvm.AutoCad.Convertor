@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Nemetschek.AutoCad.LayersConvertor" 
         xmlns:viewmodels="clr-namespace:Nemetschek.AutoCad.LayersConvertor.ViewModels" 
-        d:DataContext="{d:DesignInstance Type=viewmodels:InfoViewModel}"
+
         Topmost="True"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
