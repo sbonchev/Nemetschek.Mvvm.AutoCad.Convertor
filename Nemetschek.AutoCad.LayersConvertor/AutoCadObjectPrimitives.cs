@@ -88,9 +88,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
                         using (var circle2 = CreateCircle(new Point3d(10, 10, 10), radius:50, PrimitiveColors.Red, ref btr, trans))
                         {
                             // ---Create a circle objects' collection:
-                            var col = new DBObjectCollection { circle1,
-                                                               circle2,
-                                                               circle3 };
+                            var col = new DBObjectCollection { circle1, circle2, circle3 };
                         }
                         trans.Commit();
                     }

@@ -49,16 +49,16 @@
 
         <Border  Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,10"/>
 
-        <Label HorizontalAlignment="Left" Margin="10,48,0,0" Grid.Row="1"  Content="Select Layer From:" VerticalAlignment="Top" Width="198" RenderTransformOrigin="0.031,0.146" Height="33" FontSize="13"/>
-        <Label HorizontalAlignment="Left" Margin="10,48,0,0" Grid.Column="1" Grid.Row="1"  Content="Select Layer To:" VerticalAlignment="Top" Width="198" RenderTransformOrigin="0.031,0.146" Height="33" FontSize="13"/>
-        <ComboBox Name ="cmbToLayer" Grid.Column="1" Margin="8,76,10,76" Grid.Row="1" VerticalAlignment="Center" FontSize="14"  ItemsSource="{Binding Path=FromLayerNames}" DisplayMemberPath="LayerName" >
+        <Label HorizontalAlignment="Left" Margin="10,48,0,0" Grid.Row="1"  Content="Select Layer From:" VerticalAlignment="Top" Width="198" RenderTransformOrigin="0.031,0.146" Height="33" FontSize="13" FontWeight="Bold" Foreground="DarkBlue"/>
+        <Label HorizontalAlignment="Left" Margin="10,48,0,0" Grid.Column="1" Grid.Row="1"  Content="Select Layer To:" VerticalAlignment="Top" Width="198" RenderTransformOrigin="0.031,0.146" Height="33" FontSize="13" FontWeight="Bold" Foreground="DarkBlue"/>
+        <ComboBox Name ="cmbToLayer" Grid.Column="1" Margin="8,76,10,76" Grid.Row="1" VerticalAlignment="Center" FontSize="14"  ItemsSource="{Binding Path=FromLayerNames}" DisplayMemberPath="LayerName" SelectedItem="{Binding Path=SelectedLayerTo, Mode=TwoWay}">
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ComboBoxItem}">
                     <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
                 </Style>
             </ComboBox.ItemContainerStyle>
         </ComboBox>
-        <ComboBox Name ="cmbFromLayer" Margin="8,76,0,76" Grid.Row="1" HorizontalAlignment="Left" Width="305" VerticalAlignment="Center" FontSize="14" ItemsSource="{Binding Path=ToLayerNames}"  DisplayMemberPath="LayerName">
+        <ComboBox Name ="cmbFromLayer" Margin="8,76,0,76" Grid.Row="1" HorizontalAlignment="Left" Width="305" VerticalAlignment="Center" FontSize="14" ItemsSource="{Binding Path=ToLayerNames}"  DisplayMemberPath="LayerName" SelectedItem="{Binding Path=SelectedLayerFrom, Mode=TwoWay}">
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ComboBoxItem}">
                     <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />

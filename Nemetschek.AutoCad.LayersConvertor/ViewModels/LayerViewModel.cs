@@ -26,8 +26,11 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
             _info = new InfoViewModel();
 
             FileCommand = new RelayCommand(OpenFiles, fc => true);
-            ProcessCommand = new RelayCommand( ProcessFile, pc => _dwgPath!.DwgPaths!.Count > 0 && FromLayerNames!.Count > 0);
-
+            ProcessCommand = new RelayCommand( ProcessFile, pc => _dwgPath!.DwgPaths!.Count > 0 
+                                                                    && FromLayerNames!.Count > 0 
+                                                                    && SelectedLayerFrom != null
+                                                                    && SelectedLayerTo != null
+                                                                    && SelectedLayerFrom.LayerName != SelectedLayerTo.LayerName);
             _isClear = false;
             GetInfo.ProcessColor = new SolidColorBrush(Colors.DarkGray);
             GetInfo.TextPath = "Select drawing file(s)!";
@@ -39,7 +42,9 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 
         private readonly InfoViewModel _info;
 
-        private LayerModel? _layer;
+        private LayerModel? _layerFrom;
+
+        private LayerModel? _layerTo;
 
         private bool _isClear;
 
@@ -55,20 +60,33 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 
         public bool IsClear => _isClear;
 
-        public LayerModel Layer
+        public LayerModel? SelectedLayerFrom
         {
-            get => _layer ?? (_layer = new LayerModel());
+            get => _layerFrom;// ?? (_layerFrom = new LayerModel());
             set
             {
-                if (_layer == value)
+                if (_layerFrom == value)
                     return;
 
-                _layer = value;
-                OnPropertyChanged(nameof(Layer));
+                _layerFrom = value;
+                OnPropertyChanged(nameof(SelectedLayerFrom));
             }
         }
 
-        public string? LayerName => _layer?.LayerName;
+        public LayerModel? SelectedLayerTo
+        {
+            get => _layerTo;// ?? (_layerTo = new LayerModel());
+            set
+            {
+                if (_layerTo == value)
+                    return;
+
+                _layerTo = value;
+                OnPropertyChanged(nameof(SelectedLayerTo));
+            }
+        }
+
+        public string? LayerName => _layerFrom?.LayerName;
 
         public ICommand FileCommand { get; set; }
 
