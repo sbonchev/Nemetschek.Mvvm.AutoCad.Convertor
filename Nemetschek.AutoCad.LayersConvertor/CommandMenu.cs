@@ -88,7 +88,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
                 LargeImage = imgSource, 
                 ShowImage = true,
                 Size = AdWin.RibbonItemSize.Large,
-                Orientation = System.Windows.Controls.Orientation.Horizontal,
+                Orientation = System.Windows.Controls.Orientation.Vertical,
                 CommandParameter = prmName,
                 CommandHandler = command
             };
