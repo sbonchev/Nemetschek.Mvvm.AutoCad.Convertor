@@ -85,7 +85,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
                 Text = text,
                 ShowText = true,
                 Image = imgSource, 
-                //LargeImage = imgSource, 
+                LargeImage = imgSource, 
                 ShowImage = true,
                 Size = AdWin.RibbonItemSize.Large,
                 Orientation = System.Windows.Controls.Orientation.Horizontal,

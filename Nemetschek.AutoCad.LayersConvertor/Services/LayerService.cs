@@ -5,8 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Nemetschek.AutoCad.LayersConvertor.Enums;
 using Nemetschek.AutoCad.LayersConvertor.Models;
 using Nemetschek.AutoCad.LayersConvertor.ViewModels;
-using System;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Nemetschek.AutoCad.LayersConvertor.Services
@@ -15,47 +13,19 @@ namespace Nemetschek.AutoCad.LayersConvertor.Services
     {
         public LayerService()
         {
-            var services = new ServiceCollection();
-            ConfigureServices(services);
+            //var services = new ServiceCollection();
+            //ConfigureServices(services);
         }
 
         [CommandMethod("LCU")]
         public void UpdateLayer()
         {
-            var lvm = _serviceProvider.GetRequiredService<LayerViewModel>();
-            var mainWindow = new LayerConvertorWindow(lvm);
+            //var lvm = _serviceProvider.GetRequiredService<LayerViewModel>();
+            var mainWindow = new LayerConvertorWindow();
             mainWindow?.ShowDialog();
         }
 
-        //public static LayerService GetLayerService => CallConvThiscall;
 
-
-        private ServiceProvider _serviceProvider=null;
-
-        private void ConfigureServices(IServiceCollection services)
-        {
-            services.AddTransient<LayerViewModel>();
-            //services.AddTransient<ILayerService, LayerService>();
-            services.AddTransient<ICommand, RelayRibbonCommand>();
-            //services.AddSingleton<LayerConvertorWindow>();
-            _serviceProvider = services.BuildServiceProvider();            
-        }
-
-        private Document? GetDocument(string dwgPath)
-        {
-            var docCollection = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager;
-            if (string.IsNullOrEmpty(dwgPath))
-                return null;
-
-            string fileName = dwgPath.Trim().ToLower();
-            foreach (Document doc in docCollection)
-            {
-                if (doc.Name.Trim().ToLower() == fileName)
-                    return doc;
-            }
-
-            return null;
-        }
 
         /// <summary>
         /// Conver one layer to selected another one.
@@ -160,6 +130,31 @@ namespace Nemetschek.AutoCad.LayersConvertor.Services
 
                 return layerList;
             }
+        }
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            services.AddTransient<LayerViewModel>();
+            //services.AddTransient<ILayerService, LayerService>();
+            services.AddTransient<ICommand, RelayRibbonCommand>();
+            //services.AddSingleton<LayerConvertorWindow>();
+            //_serviceProvider = services.BuildServiceProvider();
+        }
+
+        private Document? GetDocument(string dwgPath)
+        {
+            var docCollection = Autodesk.AutoCAD.ApplicationServices.Core.Application.DocumentManager;
+            if (string.IsNullOrEmpty(dwgPath))
+                return null;
+
+            string fileName = dwgPath.Trim().ToLower();
+            foreach (Document doc in docCollection)
+            {
+                if (doc.Name.Trim().ToLower() == fileName)
+                    return doc;
+            }
+
+            return null;
         }
 
     }
