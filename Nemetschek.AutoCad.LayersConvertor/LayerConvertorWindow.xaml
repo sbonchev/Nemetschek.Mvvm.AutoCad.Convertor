@@ -67,8 +67,9 @@
         </ComboBox>
 
 
-        <Button Name="btnOpenFile" Grid.Column="0" Grid.Row="2"  Margin="96,34,96,34" Command="{Binding Path=FileCommand}" FontWeight="Bold" Foreground="White" Background="DarkBlue"  HorizontalAlignment="Center" VerticalAlignment="Top" MinHeight="35" MinWidth="100">Select Files</Button>
-        <Button Name="btnProcess" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Margin="114,36,86,34" Command="{Binding Path=ProcessCommand}" FontWeight="Bold" Foreground="White" Background="DarkBlue" HorizontalAlignment="Center" VerticalAlignment="Top" MinHeight="35" MinWidth="100">
+        <Button Name="btnOpenFile" Grid.Column="0" Grid.Row="2"  Margin="96,34,96,34" Command="{Binding Path=FileCommand}" FontWeight="Bold" Foreground="White" Background="DarkBlue"  HorizontalAlignment="Center" VerticalAlignment="Top" MinHeight="35" MinWidth="100" ToolTip="Select Files">Select Files</Button>
+        <Button Name="btnProcess" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.5,0.5" Margin="114,36,86,34" Command="{Binding Path=ProcessCommand}"
+                FontWeight="Bold" Foreground="White" Background="DarkBlue" HorizontalAlignment="Center" VerticalAlignment="Top" MinHeight="35" MinWidth="100" ToolTip="Process To Selected Layer" ToolTipService.ShowOnDisabled="True">
             Process
         </Button>
 

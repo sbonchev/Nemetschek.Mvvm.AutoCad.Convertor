@@ -80,6 +80,7 @@ namespace Nemetschek.AutoCad.LayersConvertor
             var ribbonPanelSource = new AdWin.RibbonPanelSource { Title = title };
             var ribbonPanel = new AdWin.RibbonPanel { Source = ribbonPanelSource };
             ribbonTab.Panels.Add(ribbonPanel);
+            var tt = new AdWin.RibbonToolTip { Image = imgSource, Title = text };
             var ribbonButtonAddLine = new AdWin.RibbonButton
             {
                 Text = text,
@@ -89,6 +90,8 @@ namespace Nemetschek.AutoCad.LayersConvertor
                 ShowImage = true,
                 Size = AdWin.RibbonItemSize.Large,
                 Orientation = System.Windows.Controls.Orientation.Vertical,
+                ResizeStyle = AdWin.RibbonItemResizeStyles.HideText,
+                ToolTip = tt,
                 CommandParameter = prmName,
                 CommandHandler = command
             };
