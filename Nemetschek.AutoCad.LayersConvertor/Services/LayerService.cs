@@ -20,9 +20,7 @@ namespace Nemetschek.AutoCad.LayersConvertor.Services
         [CommandMethod("LCU")]
         public void UpdateLayer()
         {
-            //var lvm = _serviceProvider.GetRequiredService<LayerViewModel>();
-            var mainWindow = new LayerConvertorWindow();
-            mainWindow?.ShowDialog();
+            LayerConvertorWindow.AppWindow?.ShowDialog();
         }
 
 
@@ -137,7 +135,6 @@ namespace Nemetschek.AutoCad.LayersConvertor.Services
             services.AddTransient<LayerViewModel>();
             //services.AddTransient<ILayerService, LayerService>();
             services.AddTransient<ICommand, RelayRibbonCommand>();
-            //services.AddSingleton<LayerConvertorWindow>();
             //_serviceProvider = services.BuildServiceProvider();
         }
 

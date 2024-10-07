@@ -32,7 +32,7 @@
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <ListView  Name="lbFiles" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,10" SelectionMode="Single"  ItemsSource="{Binding Path=GetDwgPath}"  >
+        <ListView  Name="lbFiles" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,10" SelectionMode="Single"  ItemsSource="{Binding Path=GetDwgPath}"  SelectedItem="{Binding Path=SelectedItemDwg}">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
@@ -82,7 +82,8 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="130" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="28" />
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
@@ -97,7 +98,10 @@
             </StatusBarItem>
             <Separator Grid.Column="3" />
             <StatusBarItem Grid.Column="4">
-                <ProgressBar Name ="prgBar" Value="{Binding Path=GetInfo.ProgressInfo, UpdateSourceTrigger=PropertyChanged}" Height="16" Minimum="0" Maximum="100" HorizontalAlignment="Center"  MinWidth="122"/>
+                <ProgressBar Name ="prgBar" Value="{Binding Path=GetInfo.ProgressInfo, UpdateSourceTrigger=PropertyChanged}" Visibility="Visible"  Height="16" MinWidth="99" Minimum="0" Maximum="100" HorizontalAlignment="Center"/>
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="5">
+                <Button Name="btnCncel" Grid.Column="0" Grid.Row="2"  Command="{Binding Path=CancelCommand}" FontWeight="Bold" Foreground="White" Background="DarkBlue" Height="28" Width="28" HorizontalAlignment="Right" ToolTip="Process Cancel" ToolTipService.ShowOnDisabled="True"> X</Button>
             </StatusBarItem>
         </StatusBar>
 

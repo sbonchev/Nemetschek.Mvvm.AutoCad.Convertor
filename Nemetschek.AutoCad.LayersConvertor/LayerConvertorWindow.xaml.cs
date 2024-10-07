@@ -14,7 +14,26 @@ namespace Nemetschek.AutoCad.LayersConvertor
             InitializeComponent();
             var layerViewModel = new LayerViewModel();
             DataContext = layerViewModel;
-            lbFiles.SelectionChanged += (o,e) => layerViewModel.SelectionLayerChanged();
+
+            AppWindow = this;
+        }
+
+        private static LayerConvertorWindow? _lcw;
+        public static LayerConvertorWindow? AppWindow
+        {
+            get
+            {
+                if (_lcw == null)
+                {
+                   _lcw = new LayerConvertorWindow();
+                }
+
+                return _lcw;
+            }
+            set
+            {
+                _lcw = value;
+            }
         }
 
     }

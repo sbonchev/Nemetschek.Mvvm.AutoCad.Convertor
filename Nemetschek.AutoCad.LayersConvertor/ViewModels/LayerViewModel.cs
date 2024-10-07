@@ -6,8 +6,7 @@ using Nemetschek.AutoCad.LayersConvertor.Models;
 using Nemetschek.AutoCad.LayersConvertor.Services;
 using System.Collections.ObjectModel;
 using Nemetschek.AutoCad.LayersConvertor.Commands;
-using System.Windows.Threading;
-using System.Windows;
+using System.ComponentModel;
 
 namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 {
@@ -18,6 +17,12 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
     {
         public LayerViewModel()
         {
+
+            _worker = new BackgroundWorker { WorkerSupportsCancellation = true, WorkerReportsProgress = true };
+            _worker.DoWork += DoWork;
+            _worker.ProgressChanged += ProgressChanged;
+            _worker.RunWorkerCompleted += WorkerCompleted;
+
             FromLayerNames = new ObservableCollection<LayerModel>();
             ToLayerNames = new ObservableCollection<LayerModel>();
 
@@ -26,15 +31,18 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
             _info = new InfoViewModel();
 
             FileCommand = new RelayCommand(OpenFiles, fc => true);
-            ProcessCommand = new RelayCommand( ProcessFile, pc => _dwgPath!.DwgPaths!.Count > 0 
-                                                                    && FromLayerNames!.Count > 0 
-                                                                    && SelectedLayerFrom != null
-                                                                    && SelectedLayerTo != null
-                                                                    && SelectedLayerFrom.LayerName != SelectedLayerTo.LayerName);
-            _isClear = false;
+            ProcessCommand = new RelayCommand(o => RunWorker(), pc => _dwgPath!.DwgPaths!.Count > 0
+                                && FromLayerNames!.Count > 0
+                                && SelectedLayerFrom != null
+                                && SelectedLayerTo != null
+                                && SelectedLayerFrom.LayerName != SelectedLayerTo.LayerName 
+                                && !_worker.IsBusy);
+            CancelCommand = new RelayCommand(Cancel, cc => true);
             GetInfo.ProcessColor = new SolidColorBrush(Colors.DarkGray);
             GetInfo.TextPath = "Select drawing file(s)!";
         }
+
+        private readonly BackgroundWorker _worker;
 
         private readonly LayerService _layerService;
 
@@ -46,9 +54,9 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 
         private LayerModel? _layerTo;
 
+        private DwgPathModel? _dwgPathSelected;
+
         private bool _isClear;
-
-
 
         public ObservableCollection<LayerModel>? FromLayerNames { get; set; }
 
@@ -62,7 +70,7 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 
         public LayerModel? SelectedLayerFrom
         {
-            get => _layerFrom;// ?? (_layerFrom = new LayerModel());
+            get => _layerFrom;
             set
             {
                 if (_layerFrom == value)
@@ -75,7 +83,7 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 
         public LayerModel? SelectedLayerTo
         {
-            get => _layerTo;// ?? (_layerTo = new LayerModel());
+            get => _layerTo;
             set
             {
                 if (_layerTo == value)
@@ -86,11 +94,27 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
             }
         }
 
+        public DwgPathModel? SelectedItemDwg
+        {
+            get => _dwgPathSelected;
+            set
+            {
+                if (_dwgPathSelected == value)
+                    return;
+
+                _dwgPathSelected = value;
+                OnPropertyChanged(nameof(SelectedItemDwg));
+                SelectionDwgChanged();
+            }
+        }
+
         public string? LayerName => _layerFrom?.LayerName;
 
         public ICommand FileCommand { get; set; }
 
         public ICommand ProcessCommand { get; set; }
+
+        public ICommand CancelCommand { get; set; }
 
         private void OpenFiles(object? parameter = null)
         {
@@ -134,37 +158,67 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
             }
         }
 
-        private void ProcessFile(object? parameter = null)
+        private void ProcessFile(object? prm = null)
         {
-            try
-            {
-                Mouse.OverrideCursor = Cursors.Wait;
-                string fromLayer = FromLayerNames?.LastOrDefault(f => f.IsSelected==true)?.LayerName!;
-                string toLayer = ToLayerNames?.LastOrDefault(t => t.IsSelected==true)?.LayerName!;
-                if (string.IsNullOrEmpty(fromLayer))
-                    return;
+            string fromLayer = FromLayerNames?.LastOrDefault(f => f.IsSelected == true)?.LayerName!;
+            string toLayer = ToLayerNames?.LastOrDefault(t => t.IsSelected == true)?.LayerName!;
+            if (string.IsNullOrEmpty(fromLayer))
+                return;
 
-                int i = 1, 
-                    totalCount = _dwgPath.DwgPaths!.Count;
-                GetInfo.ProcessColor = new SolidColorBrush(Colors.DarkBlue);
-                var dwgItems = _dwgPath.DwgPaths.Where(f => f.IsSelected == true);
-                foreach (var itm in dwgItems)
-                {
-                    //ProcessDispatcher.Execute(() => GetInfo.ProgressInfo = (i / totalCount) * 100);
-                    GetInfo.ProgressInfo = (i / totalCount) * 100;
-                    GetInfo.TextPath = $"Processing ( {i} of {totalCount} files) - {itm.SelectedPath}";
-                    var prgStatus = _layerService.ProcessLayer(itm.SelectedPath!, fromLayer, toLayer);
-                    GetInfo.TextPath = prgStatus.Text;
-                    GetInfo.ProcessColor = prgStatus.Status == Enums.ProcessStatus.Succed ? new SolidColorBrush(Colors.DarkGreen)
-                                                                                          : new SolidColorBrush(Colors.Red);                    
-                    i++;
-                }
-            }
-            finally
+            int i = 1,
+                totalCount = _dwgPath.DwgPaths!.Count;
+            GetInfo.ProcessColor = new SolidColorBrush(Colors.DarkBlue);
+            var dwgItems = _dwgPath.DwgPaths.Where(f => f.IsSelected == true);
+            foreach (var itm in dwgItems)
             {
-                GetInfo.ProgressInfo = 0;
-                Mouse.OverrideCursor = null;
+                var prmEvn = prm as DoWorkEventArgs;
+                if (prmEvn != null && _worker.CancellationPending)
+                {
+                    prmEvn.Cancel = true;
+                    _worker.ReportProgress(0);
+                    GetInfo.TextPath = "Process has been canceled!";
+                    return;
+                }
+                GetInfo.TextPath = $"Processing ( {i} of {totalCount} files) - {itm.SelectedPath}";
+                _worker.ReportProgress((i / totalCount) * 50);
+                InfoModel? prgStatus = null; // --- it will be waiting untill the return-result! 
+                ProcessDispatcher.Execute( () => prgStatus = _layerService.ProcessLayer(itm.SelectedPath!, fromLayer, toLayer)); // --- AutoCad Layer Processing
+                ProcessDispatcher.Execute(_ = new Action(() =>
+                {
+                    GetInfo.TextPath = prgStatus?.Text;
+                    GetInfo.ProcessColor = prgStatus?.Status == Enums.ProcessStatus.Succed ? new SolidColorBrush(Colors.DarkGreen)
+                                                                                           : new SolidColorBrush(Colors.Red);
+                    Mouse.OverrideCursor = null;
+                }));
+                i++;
             }
+        }
+
+        private void RunWorker()
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            if (!_worker.IsBusy)
+                _worker.RunWorkerAsync();
+        }
+
+        private void DoWork(object? sender, DoWorkEventArgs e)
+        {
+            ProcessFile(e);
+        }
+
+        private void Cancel(object? sender)
+        {
+                _worker.CancelAsync();
+        }
+
+        private void ProgressChanged(object? sender, ProgressChangedEventArgs e)
+        {
+            GetInfo.ProgressInfo = e.ProgressPercentage;
+        }
+
+        private void WorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
+        {
+            _worker.ReportProgress(0);
         }
 
         private void LoadComboLayers()
@@ -195,7 +249,7 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
             }
         }
 
-        internal void SelectionLayerChanged()
+        private void SelectionDwgChanged()
         {
             if (!_isClear)
             {
@@ -207,16 +261,6 @@ namespace Nemetschek.AutoCad.LayersConvertor.ViewModels
 
     }
 
-    public static class ProcessDispatcher
-    {
-        public static void Execute(Action action)
-        {
-            if (Application.Current is null || Application.Current.Dispatcher is null)
-                return;
-
-            // ---Marshall to Main Thread:
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, action);
-        }
-    }
+    
 
 }
